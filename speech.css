@@ -1,0 +1,74 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #121212; /* dark background */
+  color: #e0e0e0;
+  margin: 0;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 120px;
+  font-size: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 15px;
+  background: #1c1c1c;
+  color: #e0e0e0;
+  box-shadow: inset 5px 5px 10px #0a0a0a,
+              inset -5px -5px 10px #2a2a2a;
+  margin-bottom: 20px;
+  resize: vertical;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap; /* ensures buttons wrap on smaller screens */
+  gap: 10px;
+  justify-content: center;
+}
+
+select, button {
+  flex: 1; /* buttons expand evenly */
+  min-width: 100px;
+  max-width: 180px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 15px;
+  background: #1c1c1c;
+  color: #e0e0e0;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px #0a0a0a,
+              -5px -5px 10px #2a2a2a;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+}
+
+select:focus, textarea:focus {
+  outline: none;
+  box-shadow: inset 5px 5px 10px #0a0a0a,
+              inset -5px -5px 10px #2a2a2a;
+}
+
+button:hover, select:hover {
+  box-shadow: inset 5px 5px 10px #0a0a0a,
+              inset -5px -5px 10px #2a2a2a;
+}
+
+/*  Mobile tweaks */
+@media (max-width: 600px) {
+  h2 {
+    font-size: 1.2rem;
+  }
+  select, button {
+    flex: 100%; /* full width on mobile */
+    max-width: none;
+  }
+}
