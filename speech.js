@@ -9,56 +9,66 @@ let voices = [];
  * Load all available voices into the dropdown
  */
 function loadVoices() {
-  // Get the voices from the Web Speech API
   voices = speechSynthesis.getVoices();
 
-  // Clear old options from the dropdown
+  // If voices still not loaded, try again shortly (for Safari/iOS)
+  if (!voices.length) {
+    setTimeout(loadVoices, 250);
+    return;
+  }
+
+  // Clear existing options
   voiceSelect.innerHTML = '';
 
-  // Loop through each voice and create an <option> for the dropdown
   voices.forEach((voice, i) => {
     const option = document.createElement('option');
-    option.value = i; // store index so we know which voice was chosen
-    option.textContent = `${voice.name} (${voice.lang})`; // show voice name + language
-    voiceSelect.appendChild(option); // add to dropdown
+    option.value = i;
+    option.textContent = `${voice.name} (${voice.lang})${voice.default ? " • default" : ""}`;
+    voiceSelect.appendChild(option);
   });
 }
 
-// Some browsers load voices asynchronously,
-// so we call loadVoices() again when voices are ready
-speechSynthesis.onvoiceschanged = loadVoices;
+// Initial call
+loadVoices();
+
+// Some browsers fire event when voices finish loading
+if (typeof speechSynthesis.onvoiceschanged !== "undefined") {
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
 
 /**
  * Speak the text entered in the textarea
  */
 function speakText() {
-  const text = textInput.value; // get the text user typed
+  const text = textInput.value.trim();
 
-  // If no text entered, show an alert and exit function
-  if (!text.trim()) {
+  if (!text) {
     alert("Please enter some text!");
     return;
   }
 
-  // Create a speech request with the typed text
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  // Get the selected voice from the dropdown
-  const selectedVoice = voices[voiceSelect.value];
-  if (selectedVoice) {
-    utterance.voice = selectedVoice; // apply chosen voice
-  }
-
-  // Stop any currently playing speech before starting new one
+  // Stop any ongoing speech before starting new
   speechSynthesis.cancel();
 
-  // Start speaking the text
+  const utterance = new SpeechSynthesisUtterance(text);
+
+  // Apply selected voice
+  const selectedVoice = voices[voiceSelect.value];
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+  }
+
+  // Normal pitch & rate (safe for all browsers)
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  // Speak
   speechSynthesis.speak(utterance);
 }
 
 /**
- * Stop any speech immediately
+ * Stop speaking immediately
  */
-function stop() {
-  speechSynthesis.cancel(); // cancels ongoing speech
+function stopSpeaking() {
+  speechSynthesis.cancel();
 }
