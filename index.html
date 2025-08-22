@@ -10,14 +10,24 @@
   <h2>Text to Speech Converter</h2>
 
   <!-- Text input -->
-  <textarea id="textInput" placeholder="Type or paste text here..."></textarea>
+  <textarea id="textInput" placeholder="Type or paste text here..." aria-label="Text to convert"></textarea>
 
   <!-- Controls -->
   <div class="controls">
-    <button onclick="speakText()">▶ Start</button>
-    <button onclick="stop()">⏹ Stop</button>
-    <select  id="voiceSelect"></select>
+    <button type="button" onclick="speakText()">▶ Start</button>
+    <button type="button" onclick="stopSpeaking()">⏹ Stop</button>
+
+    <select id="voiceSelect" aria-label="Select voice" title="Select voice"></select>
   </div>
+
+  <!-- Status for mobile/iOS -->
+  <p id="status" style="text-align:center; font-size:.9rem; opacity:.8; margin-top:10px;">
+    Loading voices...
+  </p>
+
+  <noscript>
+    <p style="text-align:center;color:#f88">This app needs JavaScript enabled.</p>
+  </noscript>
 
   <script src="speech.js"></script>
 </body>
